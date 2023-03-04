@@ -1,0 +1,20 @@
+
+
+The sub-directories of a role:
+
+defaults –  Includes default values for role variables. Use sensible/safe values here. Most will be overridden.
+
+files  – Any kind of file used by the role's actions. Assets/resources, in a sense but can be anything.
+
+handlers – The role's tasks trigger the handlers.
+
+meta – Metadata information for the role: dependencies, author, platforms, license, ...
+
+tasks – A sequence of tasks to be executed by this role. Like a playbook's task sequence.
+
+templates – Templates used by the role's tasks, in the Jinja2 format.
+
+tests – Config files for testing the role.
+
+vars – Variables used by the role. These have a high precedence and will override most other equivalent values.
+
