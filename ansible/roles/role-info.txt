@@ -2,7 +2,7 @@
 
 The sub-directories of a role:
 
-defaults –  Includes default values for role variables. Use sensible/safe values here. Most will be overridden.
+defaults –  Includes default values for role variables. Use sensible/safe values here. Many/most may be overridden.
 
 files  – Any kind of file used by the role's actions. Assets/resources, in a sense but can be anything.
 

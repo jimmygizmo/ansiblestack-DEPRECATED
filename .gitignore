@@ -1,5 +1,9 @@
 
 
+# SSL:/TLS Certificates and Other Secrets
+secrets/*
+!secrets/about-secrets.txt
+
 # In many of the following, we keep the about file there and ignore all else. (The same is done for .gitkeep files.)
 
 # datavolume and dbvolume
