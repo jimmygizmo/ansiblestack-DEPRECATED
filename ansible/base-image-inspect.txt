@@ -1,0 +1,126 @@
+williamyeh/ansible            master-debian9-onbuild   28fc23ed06e1   4 years ago    400MB
+docker inspect 28fc23ed06e1
+ALL ENTRYPOINTS ARE NULL. Interesting. Related to ONBUILD? Intended for cmd line within container?
+There are two sections with an ONBUILD and both are similar or the same. The commands don't
+obviously result in any entrypoint I could identify. This remains interesting.
+Perhaps the usage of the image is intended to have an external entrypoint specified. I see docker run
+being used, but not compose so far. It is from these launch steps now, we look for the intended entry point(s).
+
+** Dockerfile has the only obvious entrypoint:
+RUN ansible-playbook-wrapper
+
+TODO: Determine where this is. It could be as simple as calling the ansible-playbook command with the ability
+  to customize args?
+  Here is an example I found in one of WY repos:
+  https://github.com/William-Yeh/docker-ansible/blob/master/alpine3-onbuild/ansible-playbook-wrapper
+  OK. This is what pick up the three Dockerfile ENV vars (makes sense).
+  SEE: /docs/notes/ansible-playbook-wrapper.txt
+
+[
+    {
+        "Id": "sha256:28fc23ed06e1a649d2187d72690f8498d5b951420bdfe0b538989fca4813b30e",
+        "RepoTags": [
+            "williamyeh/ansible:master-debian9-onbuild"
+        ],
+        "RepoDigests": [
+            "williamyeh/ansible@sha256:92afae17d0ee968bb57a470c34a73f095a20c2e846cce4a7951b9349748662c1"
+        ],
+        "Parent": "",
+        "Comment": "",
+        "Created": "2018-11-27T10:20:40.516761507Z",
+        "Container": "5c49a8eddd4a1df55a6bca633981370ee1f9e033864a82b6d3a5c4abd66ec1e1",
+        "ContainerConfig": {
+            "Hostname": "5c49a8eddd4a",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/opt/ansible/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "PYTHONPATH=/opt/ansible/lib:",
+                "MANPATH=/opt/ansible/docs/man:"
+            ],
+            "Cmd": [
+                "/bin/sh",
+                "-c",
+                "#(nop) ",
+                "CMD [\"ansible-playbook\" \"--version\"]"
+            ],
+            "ArgsEscaped": true,
+            "Image": "sha256:ca2c33409fbc22191d27bad974f9861d159940b9a03b05e0e7c7509b99ea3a1c",
+            "Volumes": null,
+            "WorkingDir": "",
+            "Entrypoint": null,
+            "OnBuild": [
+                "RUN  DEBIAN_FRONTEND=noninteractive  apt-get update   &&               echo \"===> Updating TLS certificates...\"         &&               apt-get install -y openssl ca-certificates",
+                "WORKDIR  /tmp",
+                "COPY  .  /tmp",
+                "RUN                echo \"===> Diagnosis: host information...\"  &&               ansible -c local -m setup all"
+            ],
+            "Labels": {}
+        },
+        "DockerVersion": "18.03.1-ee-3",
+        "Author": "William Yeh <william.pjyeh@gmail.com>",
+        "Config": {
+            "Hostname": "",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/opt/ansible/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "PYTHONPATH=/opt/ansible/lib:",
+                "MANPATH=/opt/ansible/docs/man:"
+            ],
+            "Cmd": [
+                "ansible-playbook",
+                "--version"
+            ],
+            "ArgsEscaped": true,
+            "Image": "sha256:ca2c33409fbc22191d27bad974f9861d159940b9a03b05e0e7c7509b99ea3a1c",
+            "Volumes": null,
+            "WorkingDir": "",
+            "Entrypoint": null,
+            "OnBuild": [
+                "RUN  DEBIAN_FRONTEND=noninteractive  apt-get update   &&               echo \"===> Updating TLS certificates...\"         &&               apt-get install -y openssl ca-certificates",
+                "WORKDIR  /tmp",
+                "COPY  .  /tmp",
+                "RUN                echo \"===> Diagnosis: host information...\"  &&               ansible -c local -m setup all"
+            ],
+            "Labels": null
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 400134219,
+        "VirtualSize": 400134219,
+        "GraphDriver": {
+            "Data": {
+                "LowerDir": "/var/lib/docker/overlay2/6cb5187a323b4e7a4c757c34184195608e98d56dd3b32cc60195b81ca766d683/diff:/var/lib/docker/overlay2/54528307142a92a7f0c6c4bca0d17f34d10950f6461466ff29d06dbca67c52c2/diff",
+                "MergedDir": "/var/lib/docker/overlay2/541f0e9fc1e21494304ad945e763af00aa423bd2ac3695650cfb86ee99caef94/merged",
+                "UpperDir": "/var/lib/docker/overlay2/541f0e9fc1e21494304ad945e763af00aa423bd2ac3695650cfb86ee99caef94/diff",
+                "WorkDir": "/var/lib/docker/overlay2/541f0e9fc1e21494304ad945e763af00aa423bd2ac3695650cfb86ee99caef94/work"
+            },
+            "Name": "overlay2"
+        },
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:90d1009ce6fe3102fee728742a3bd73eea2b39c88cdda99977a3fb130dbc17ac",
+                "sha256:bbf08884937a05644f534422de5ea04b7d986f92e98b8936f340a0127302461a",
+                "sha256:0c0caf089389c93996c4bd4e62e538b9bb775171a8149f77d1af3210f513977d"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "0001-01-01T00:00:00Z"
+        }
+    }
+]
+

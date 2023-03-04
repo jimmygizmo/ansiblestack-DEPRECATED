@@ -1,0 +1,61 @@
+This script is kept here for documentation purposes.
+This is part of the WY base image. This script is the entrypoint of the Docker image,
+called at the end of our Dockerfile according WY base image usage instructions.
+
+First it reads the 3 ENV vars this image uses, which perhaps only get used here.
+
+It installs roles and then runs the defined playbook.
+
+================================================================================================================
+
+#!/bin/sh
+#
+# Simple wrapper for executing ansible-galaxy and ansible-playbook
+# with local connection.
+#
+# USAGE:
+#    ansible-playbook-wrapper  [other ansible-playbook arguments]
+#
+# ENVIRONMENT VARIABLES:
+#
+#    - REQUIREMENTS: requirements filename; default = "requirements.yml"
+#    - PLAYBOOK:     playbook filename;     default = "playbook.yml"
+#    - INVENTORY:    inventory filename;    default = "/etc/ansible/hosts"
+#
+
+
+#
+# install Galaxy roles, if any
+#
+
+if [ -z "$REQUIREMENTS" ]; then
+    REQUIREMENTS=requirements.yml
+fi
+
+if [ -f "$REQUIREMENTS" ]; then
+    apk --update add git
+    ansible-galaxy install -r $REQUIREMENTS
+fi
+
+
+#
+# execute playbook
+#
+
+if [ -z "$PLAYBOOK" ]; then
+    PLAYBOOK=playbook.yml
+fi
+
+
+if [ -z "$INVENTORY" ]; then
+    exec ansible-playbook        \
+       $PLAYBOOK                 \
+       --connection=local        \
+       "$@"
+else
+    exec ansible-playbook        \
+       -i $INVENTORY  $PLAYBOOK  \
+       --connection=local        \
+       "$@"
+fi
+

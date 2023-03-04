@@ -1,0 +1,17 @@
+# playbook.yml
+-
+  name: AnsibleWelcome
+  hosts: localhost
+  tasks:
+    - name: Greeting
+      command: echo "Welcome to Ansible!"
+
+    - name: System Details
+      command: uname -a
+
+    - name: OS Release
+      command: cat /etc/os-release
+
+    - name: Disk Freespace
+      command: df -h
+

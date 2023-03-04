@@ -1,0 +1,44 @@
+
+IMPORTANT ENTRIES NOTICED IN STARTUP LOG:
+"ansible_distribution_version": "9.6",
+
+"ansible_python_version": "2.7.13"  - Not sure if this is the 'main' info or a subcomponent
+"ansible_os_family": "Debian"
+"ansible_kernel": "5.15.49-linuxkit"
+        "ansible_env": {
+            "HOME": "/root",
+            "HOSTNAME": "cf532115a165",
+            "MANPATH": "/opt/ansible/docs/man:",
+            "PATH": "/opt/ansible/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "PWD": "/tmp",
+            "PYTHONPATH": "/opt/ansible/lib:"
+        },
+
+
+
+
+Premium lean third party Docker images (Here we use williamyeh/ansible:master-debian9-onbuild)
+https://hub.docker.com/r/williamyeh/ansible
+
+Containerizing article
+https://4sysops.com/archives/how-to-deploy-ansible-inside-a-docker-container/
+
+Installing Ansible (Docs):
+https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#control-node-requirements
+
+Official Ansible Docker images - Too big and bloated for my preference:
+https://hub.docker.com/r/ansible/ansible
+
+
+
+================================================================================================================
+
+Playbook - network port checking  (maybe use like wait-for-it.sh but obviously for service monitoring too)
+https://medium.com/@chanhiuyeung/ansible-playbook-for-network-port-checking-from-host-level-openshift-as-example-fb1960090fdf
+
+AWESOME ANSIBLE REPOSITORY:
+https://github.com/ansible-community/awesome-ansible
+
+
+
+

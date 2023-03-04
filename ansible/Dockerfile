@@ -1,4 +1,6 @@
 FROM williamyeh/ansible:master-debian9-onbuild
+# 400 MB
+
 
 # ==> Specify requirements filename;  default = "requirements.yml"
 #ENV REQUIREMENTS  requirements.yml

@@ -21,10 +21,10 @@ services:
 
 
   # ---- ANSIBLE ----
-  ansiblestack-postgres:
-    container_name: ansiblestack-postgres
-    build: ./postgres
-    image: ansiblestack-postgres
+  ansiblestack-ansible:
+    container_name: ansiblestack-ansible
+    build: ./ansible
+    image: ansiblestack-ansible
     networks:
       - ansiblestack-network
     # Future: Nucleus Stack port-assignment scheme for Ansible 8080 is 38080
@@ -36,6 +36,12 @@ services:
     #   - "datavolume:/ansible/container/path/to/be/determined"
     # environment:
     #   - "KEY=value"
+
+
+  # ---- CONTROL-NODE ----
+
+
+  # ---- MANAGED-NODE ----
 
 
 #  # ---- NUCLEUS-API ----
