@@ -1,0 +1,87 @@
+version: "2"
+
+networks:
+  ansiblestack-network:
+
+volumes:
+  datavolume:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./datavolume
+  dbvolume:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./dbvolume
+
+services:
+
+
+  # ---- ANSIBLE ----
+  ansiblestack-postgres:
+    container_name: ansiblestack-postgres
+    build: ./postgres
+    image: ansiblestack-postgres
+    networks:
+      - ansiblestack-network
+    # Future: Nucleus Stack port-assignment scheme for Ansible 8080 is 38080
+    # Nucleus stack operational layers prefer port numbers made from template 44444 (best mneumonic choice)
+    # Nucleus stack platform/IAAS/PAAS layers prefer port numbers made from template 33333 (best mneumonic choice)
+    ports:
+      - "8080:8080"
+    # volumes:
+    #   - "datavolume:/ansible/container/path/to/be/determined"
+    # environment:
+    #   - "KEY=value"
+
+
+#  # ---- NUCLEUS-API ----
+#  ansiblestack-flask:
+#    container_name: ansiblestack-nucleus-api
+#    build: ./nucleus-api
+#    depends_on:
+#      - ansiblestack-ansible
+#    image: ansiblestack-nucleus-api
+#    networks:
+#      - ansiblestack-network
+#    # environment:
+#    #   - "FLASK_APP=ansiblestack.py"
+#    #   - "FLASK_DEBUG=1"
+#    # ports:
+#    #   - "48080:5000"
+#    volumes:
+#      - "datavolume:/app/datavolume"
+#    #
+#    # wait-for-it.sh must target the internal port number, not the external
+#    command: [
+#      "/app/wait-for-it.sh",
+#      "--host=ansiblestack-ansible",
+#      "--port=8080",
+#      "--timeout=60",
+#      "--",
+#      "/bin/bash",
+#      "/app/boot.sh",
+#    ]
+
+###############################################################################
+
+
+# For production deployment on AWS:
+
+#    SETUP: To use a full repository URL image name, customize a URL like the one here:
+#    image: <YOUR-AWS-USER-ID-NUMBER>.dkr.ecr.us-west-2.amazonaws.com/<YOUR-AWS-REPO-NAME>:ansiblestack-nucleus-api
+#
+# CONSIDER FOR ALL CONTAINERS:
+#    restart: unless-stopped
+
+# NUCLEUS API NOTES:
+# Cannot connect to Flask from outside the container unless you tell Flask to listen on 0.0.0.0. This issue has been
+# seen before. The default (which does not work for me, at least on macOS, is localhost or 127.0.0.1. Neither work
+# on macOS. I would have to test to see if this is also the case on Linux. I suspect the issue is the same when
+# the host OS of the docker engine is Linux. It could just be a basic networking issue. 127.0.0.1/localhost are the
+# loopback address, not intended for external access. Running locally a browser probably COULD access localhost,
+# actually I know it can. It is because this is running in a container and hence it is a separate logical host.
+

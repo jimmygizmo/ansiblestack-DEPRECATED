@@ -1,3 +1,31 @@
+
+
+# In many of the following, we keep the about file there and ignore all else. (The same is done for .gitkeep files.)
+
+# datavolume and dbvolume
+# Git will not add anything inside this directory except the .gitkeep file which allows git to store an empty dir.
+datavolume/*
+!datavolume/.gitkeep
+dbvolume/*
+!dbvolume/.gitkeep
+
+# MacOS
+.DS_Store
+
+
+# IntelliJ IDE settings directory. You almost never want your IDE settings in the repository unless
+# you have a very specific need like some helpful settings for an entire team to use and then,
+# you need to account for the same directory being generated and modified by team members.
+# Almost everyone simply excludes all IDE settings files and directories in all cases.
+.idea/
+
+
+# Directory to briefly hold working files inside the project but not add them to git.
+# * Tell your IDE to exclude/ignore this directory to reduce indexing & inspection overhead.
+# In IntelliJ IDEs, this is called "Mark as Excluded".
+todo/
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -82,7 +110,11 @@ profile_default/
 ipython_config.py
 
 # pyenv
-.python-version
+# I include instructions to use Pyenv to create the needed Pyenv Virtualenv.
+# The .python-version file should be stored in the repo to help promote correct usage of Python and Pyenv for this project.
+# Everyone should be using Pyenv for Python version management and management of VEs. It's the only way to consistently
+# have all of your version match and it's the easiest way to manage VEs as well as your Python installations.
+#.python-version
 
 # pipenv
 #   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
