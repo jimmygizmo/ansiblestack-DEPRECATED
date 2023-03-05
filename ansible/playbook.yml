@@ -19,6 +19,12 @@
   name: Play02 - Set up managed-alpine node
   hosts: ansiblestack-managed-alpine
   tasks:
+  - name: DebugTask-Part1 - look for apk since next task not finding it.
+    shell: which apk
+    register: which_output
+  - name: DebugTask-Part2 - output results of apk search
+    local_action: command echo item
+    with_items: which_output.stdout_lines
   - name: Task0201 - Install Node.js and npm
     # loop is used over two packages: node and npm, caching each install
     apk:
@@ -50,6 +56,7 @@
   - name: Task0207 - Check list of Node.js apps running.
     # The variable forever_list will capture the output to be analyzed in the following task
     # stdout/stderr available via forever_list.stdout, forever_list.stderr
+    # (Also try xxxx.stdout_lines, xxxx.stderr_lines)
     # Ansible conditionals: when = if statement, changed_when
     command: forever list
     register: forever_list

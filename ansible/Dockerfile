@@ -12,5 +12,6 @@ FROM williamyeh/ansible:master-debian9-onbuild
 #ENV INVENTORY     inventory.ini
 
 # ==> Executing Ansible (with a simple wrapper)...
-RUN ansible-playbook-wrapper
+# ** This has been moved to compose as have the env vars.
+#RUN ansible-playbook-wrapper
 

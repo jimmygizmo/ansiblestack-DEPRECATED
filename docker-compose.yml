@@ -38,6 +38,10 @@ services:
     environment:
       - "PLAYBOOK=playbook.yml"
       - "INVENTORY=inventory.ini"
+    command: [
+      "ansible-playbook-wrapper",
+    ]
+
 
 
   # ---- MANAGED NODE ----
