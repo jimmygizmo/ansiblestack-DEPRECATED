@@ -1,17 +1,63 @@
 # playbook.yml
+
+
 -
-  name: AnsibleWelcome
+  name: Play01 - AnsibleWelcome - control-node localhost - show system info
   hosts: localhost
   tasks:
-    - name: Greeting
+    - name: Task0101 - Greeting
       command: echo "Welcome to Ansible!"
-
-    - name: System Details
+    - name: Task0102 - System Details
       command: uname -a
-
-    - name: OS Release
+    - name: Task0103 - OS Release
       command: cat /etc/os-release
-
-    - name: Disk Freespace
+    - name: Task0104 - Disk Freespace
       command: df -h
+
+
+-
+  name: Play02 - Set up managed-alpine node
+  hosts: ansiblestack-managed-alpine
+  tasks:
+  - name: Task0201 - Install Node.js and npm
+    # loop is used over two packages: node and npm, caching each install
+    apk:
+      name: "{{ item }}"
+      update_cache: yes
+      state: latest
+    loop:
+    - nodejs
+    - nodejs-npm
+  - name: Task0202 - Create the app directory
+    file:
+      path: /node-app
+      state: directory
+  - name: Task0203 - Install the Node.js Express web application
+    template:
+      src: app.js.j2
+      dest: /node-app/app.js
+  - name: Task0204 - Copy package.json, the Node.js dependencies file
+    copy:
+      src: package.json
+      dest: /node-app/package.json
+  - name: Task0205 - Install Node.js dependencies
+    npm:
+      path: /node-app
+      state: present
+      production: true
+  - name: Task0206 - Install forever which will run the Node.js app and keep it running
+    npm: name=forever global=yes state=present
+  - name: Task0207 - Check list of Node.js apps running.
+    # The variable forever_list will capture the output to be analyzed in the following task
+    # stdout/stderr available via forever_list.stdout, forever_list.stderr
+    # Ansible conditionals: when = if statement, changed_when
+    command: forever list
+    register: forever_list
+    changed_when: false
+  - name: Task0208 - Show some debug output (show the forever list)
+    debug:
+      msg: "DEBUG: forever_list.stdout: {{forever_list.stdout}}"
+  - name: Task0209 - Start the Node.js Express web application -IF- it cannot be found in the list
+    command: forever start /node-app/app.js
+    when: "forever_list.stdout.find('/node-app/app.js') == -1"
 

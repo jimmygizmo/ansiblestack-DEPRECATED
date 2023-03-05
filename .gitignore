@@ -1,4 +1,7 @@
 
+# Ignore id_rsa* dirs which will be created in secrets-volume
+id_rsa*
+
 
 # SSL:/TLS Certificates and Other Secrets
 secrets/*

@@ -1,0 +1,2 @@
+ansiblestack-managed-alpine ansible_host=ansiblestack-managed-alpine ansible_connection=ssh
+

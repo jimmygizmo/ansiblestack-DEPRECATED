@@ -35,10 +35,9 @@ services:
       - "8080:8080"
     # volumes:
     #   - "datavolume:/ansible/container/path/to/be/determined"
-    # environment:
-    #   - "KEY=value"
-
-
+    environment:
+      - "PLAYBOOK=playbook.yml"
+      - "INVENTORY=inventory.ini"
 
 
   # ---- MANAGED NODE ----
@@ -59,9 +58,6 @@ services:
     environment:
       - SSH_ENABLE_ROOT=true
       # - SSH_USERS="admin:1000:1000"
-
-
-
 
 
 #  # ---- NUCLEUS-API ----
