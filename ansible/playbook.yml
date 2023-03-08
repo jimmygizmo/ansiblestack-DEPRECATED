@@ -1,70 +1,39 @@
-# playbook.yml
-
+---
+# playbook-real.yml
 
 -
-  name: Play01 - AnsibleWelcome - control-node localhost - show system info
-  hosts: localhost
+  name: Play01 - EC2 t2.medium fresh instance - Gather Information Before Setup
+  # smartmetal.ai
+  hosts: 54.68.53.75
   tasks:
-    - name: Task0101 - Greeting
-      command: echo "Welcome to Ansible!"
-    - name: Task0102 - System Details
+    - name: Task0101 - Date, Time -- date
+      command: date
+    - name: Task0102 - Locate env (we need env for portable shebangs) -- which env
+      command: which env
+    - name: Task0103 - Locate bash (we use bash for everything) -- which bash
+      command: which bash
+    - name: Task0104 - System and Kernel Info -- uname -a
       command: uname -a
-    - name: Task0103 - OS Release
-      command: cat /etc/os-release
-    - name: Task0104 - Disk Freespace
+    - name: Task0105 - Proc Version -- cat /proc/version
+      command: cat /proc/version
+    - name: Task0106 - Process Table -- ps aux
+      command: ps aux
+    - name: Task0107 - Memory Stats -- vmstat
+      command: vmstat
+    - name: Task0108 - IO Stats -- iostat
+      command: iostat
+    - name: Task0109 - PATH -- echo "$PATH"
+      command: echo "$PATH"
+    - name: Task0110 - List Block Devices -- lsblk
+      command: lsblk
+    - name: Task0111 - Disk Freespace -- df -h
       command: df -h
+    - name: Task0112 - List Filesystem Mount Points -- mount
+      command: mount
+    - name: Task0113 - List All System Limits (file descriptors, stack size, etc.) -- ulimit -a
+      command: ulimit -a
+    - name: Task0114 - Environment Variables -- env
+      command: env
 
-
--
-  name: Play02 - Set up managed-alpine node
-  hosts: ansiblestack-managed-alpine
-  tasks:
-  - name: DebugTask-Part1 - look for apk since next task not finding it.
-    shell: which apk
-    register: which_output
-  - name: DebugTask-Part2 - output results of apk search
-    local_action: command echo item
-    with_items: which_output.stdout_lines
-  - name: Task0201 - Install Node.js and npm
-    # loop is used over two packages: node and npm, caching each install
-    apk:
-      name: "{{ item }}"
-      update_cache: yes
-      state: latest
-    loop:
-    - nodejs
-    - nodejs-npm
-  - name: Task0202 - Create the app directory
-    file:
-      path: /node-app
-      state: directory
-  - name: Task0203 - Install the Node.js Express web application
-    template:
-      src: app.js.j2
-      dest: /node-app/app.js
-  - name: Task0204 - Copy package.json, the Node.js dependencies file
-    copy:
-      src: package.json
-      dest: /node-app/package.json
-  - name: Task0205 - Install Node.js dependencies
-    npm:
-      path: /node-app
-      state: present
-      production: true
-  - name: Task0206 - Install forever which will run the Node.js app and keep it running
-    npm: name=forever global=yes state=present
-  - name: Task0207 - Check list of Node.js apps running.
-    # The variable forever_list will capture the output to be analyzed in the following task
-    # stdout/stderr available via forever_list.stdout, forever_list.stderr
-    # (Also try xxxx.stdout_lines, xxxx.stderr_lines)
-    # Ansible conditionals: when = if statement, changed_when
-    command: forever list
-    register: forever_list
-    changed_when: false
-  - name: Task0208 - Show some debug output (show the forever list)
-    debug:
-      msg: "DEBUG: forever_list.stdout: {{forever_list.stdout}}"
-  - name: Task0209 - Start the Node.js Express web application -IF- it cannot be found in the list
-    command: forever start /node-app/app.js
-    when: "forever_list.stdout.find('/node-app/app.js') == -1"
+...
 

@@ -1,4 +1,16 @@
 
+# Temporary method (a quick hack) to develop this project using
+# real managed nodes (My Nucleus Stack dev VMs) but not have any
+# sensitive info be added to the repository. A general pattern will
+# be that if I want to use sensitive settings or code anyhere,
+# I will add the -real suffix to the relevant file or directory and
+# exclude it from the repo in a consistent manner.
+
+inventory-real.ini
+playbook-real.yml
+
+
+
 # Ignore id_rsa* dirs which will be created in secrets-volume
 id_rsa*
 

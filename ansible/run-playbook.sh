@@ -1,14 +1,5 @@
-This script is kept here for documentation purposes.
-This is part of the WY base image. This script is the entrypoint of the Docker image,
-called at the end of our Dockerfile according WY base image usage instructions.
+#! /bin/sh
 
-First it reads the 3 ENV vars this image uses, which perhaps only get used here.
-
-It installs roles and then runs the defined playbook.
-
-================================================================================================================
-
-#!/bin/sh
 #
 # Simple wrapper for executing ansible-galaxy and ansible-playbook
 # with local connection.
@@ -50,17 +41,13 @@ fi
 if [ -z "$INVENTORY" ]; then
     exec ansible-playbook        \
        $PLAYBOOK                 \
-       --connection=local        \
+       --connection=smart        \
+       -vvvv                     \
        "$@"
 else
     exec ansible-playbook        \
        -i $INVENTORY  $PLAYBOOK  \
-       --connection=local        \
+       --connection=smart        \
+       -vvvv                     \
        "$@"
 fi
-
-# -v, --verbose
-# Causes Ansible to print more debug messages. Adding multiple -v will increase the verbosity,
-# the builtin plugins currently evaluate up to -vvvvvv. A reasonable level to start is -vvv,
-# connection debugging might require -vvvv.
-

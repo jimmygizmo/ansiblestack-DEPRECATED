@@ -35,12 +35,17 @@ services:
       - "8080:8080"
     # volumes:
     #   - "datavolume:/ansible/container/path/to/be/determined"
+    # ENV: inventory-real.ini can hold sensitive (real) hosts. It won't be added to the repo. (.gitignore)
     environment:
       - "PLAYBOOK=playbook.yml"
-      - "INVENTORY=inventory.ini"
+      - "INVENTORY=inventory-real.ini"
     command: [
-      "ansible-playbook-wrapper",
+      "/bin/sh",
+      "/tmp/run-playbook.sh",
     ]
+#    command: [
+#      "ansible-playbook-wrapper",
+#    ]
 
 
 
