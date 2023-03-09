@@ -1,4 +1,18 @@
-# ansiblestack
+# ansiblestack-DEPRECATED
+
+## UPDATE:
+
+I've decided to design my own Ansible container as I think I have a better strategy that what is used currently in this project. It makes sense to start a fresh repo since the structure will be very different. The new AnsibleStack will start around March 10th, 2023.
+I like lean images when possible and the Ansible Python libraries are already of a substantial size, so I will begin, with a lean Python image like a Bitnami and build out a sweet containerized Anisble control node. Many design patterns of the project will parallel the standalone Ansible I have designed in my GitHub Project: AnsiblyMyEC2. Clean and simple is the theme of the day, sollow design patterns for containerization I have developed with my Mucleus Stack and companion stacks.
+
+Jim
+
+----
+----
+DEPRECATED BELOW HERE:
+----
+
+
 Ansible on a lean Debian 9 image orchestrated with Docker Compose and packaged for ease of use. A clean implementation great for independent deployment or use with The Nucleus Stack full stack ecosystem.
 
 ----
